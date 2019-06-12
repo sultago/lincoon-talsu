@@ -1,9 +1,9 @@
-import Link from "next/link"
-import Header from "../components/Header"
-import Layout from "../components/MyLayout"
-import fetch from "isomorphic-unfetch"
-import AddTextForm from "../components/AddTextForm"
-import React from "react"
+import Link from 'next/link';
+import Header from '../components/Header';
+import Layout from '../components/MyLayout';
+import fetch from 'isomorphic-unfetch';
+import AddTextForm from '../components/AddTextForm';
+import React from 'react';
 
 // const Index = props => (
 //   <Layout>
@@ -18,7 +18,7 @@ import React from "react"
 //             </Link>
 //           </li>
 //         ))
-//       }  
+//       }
 //     </ul>
 //   </Layout>
 // )
@@ -42,22 +42,24 @@ import React from "react"
 
 export default class Index extends React.Component {
   render() {
-    return <Layout>
-      <h1>lincoon</h1>
-      <AddTextForm />
-      <ul>
-        {
-          this.props.datas.map(data => (
+    return (
+      <Layout>
+        <h1>lincoon</h1>
+        <AddTextForm />
+        <ul>
+          {this.props.datas.map(data => (
             <li key={data.key}>
               <Link as={`/p/${data.key}`} href={`/post?key=${data.key}`}>
                 <a>{data.key}</a>
               </Link>
-              <button onClick={async () => await this.remove(data.key)}>remove</button>
+              <button onClick={async () => await this.remove(data.key)}>
+                remove
+              </button>
             </li>
-          ))
-        }  
-      </ul>
-    </Layout>
+          ))}
+        </ul>
+      </Layout>
+    );
   }
 
   static async getInitialProps() {
@@ -66,22 +68,24 @@ export default class Index extends React.Component {
   }
 
   static async getAllDatas() {
-    const res = await fetch('http://localhost:3000/api/getAll')
-    const data = await res.json()
-  
-    const datas = Object.keys(data).map(key => ({key, value : data[key]}));
-    console.log(`Show data fetched. Count: ${datas.length}`)
-  
-    return datas
+    const res = await fetch('http://localhost:3000/api/getAll');
+    const datas = await res.json();
+
+    // const datas = Object.keys(data).map(key => ({key, value : data[key]}));
+    console.log(`Show data fetched. Count: ${datas.length}`);
+
+    return datas;
   }
 
   submitText(key, value) {
-    console.log(key, value)
+    console.log(key, value);
   }
-  
+
   async remove(key) {
-    await fetch(`http://localhost:3000/api/${encodeURIComponent(key)}`, { method:'DELETE' })
-    console.log(`remove : ${key}`)
+    await fetch(`http://localhost:3000/api/${encodeURIComponent(key)}`, {
+      method: 'DELETE',
+    });
+    console.log(`remove : ${key}`);
     // const datas = await Index.getAllDatas();
     // this.props.datas.unshift()
   }
